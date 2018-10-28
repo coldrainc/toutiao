@@ -1,0 +1,11 @@
+.new{
+    margin: 0 0 50rpx 0;
+}
+.images{
+    display: flex;
+    justify-content: center;
+}
+.images image{
+    width: 250rpx;
+    height: 180rpx;
+}
