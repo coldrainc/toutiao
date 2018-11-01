@@ -1,0 +1,38 @@
+<import src="../../../wxParse/wxParse.wxml"></import>
+<view class="body">
+    <view class="news">
+        <view class="title">
+            全球总决赛
+        </view>
+        <view class="header">
+            <image src="../../../image/emoji.png" class="avatar"/>
+            <view class="nickname">
+                实锤社
+            </view>
+            <Button>关注</Button>
+        </view>
+        <view class="content">
+            <!-- <template is="wxParse" data="{{wxParseData: article.nodes}}"></template> -->
+        </view>
+        <view class="footer">
+            <Button plain type="danger">编辑</Button>
+            <Button plain type="danger">不喜欢</Button>
+            <Button plain type="danger">微信</Button>
+            <Button plain type="danger">朋友圈</Button>
+        </view>
+    </view>
+
+    <view class="comment">
+    
+    </view>
+</view>
+<view class="bottom">
+    <view class="input">
+        <image  class="write" src="../../../image/write.png"/>
+        <input type="text" placeholder="写评论..."/>
+        <image class="emoji" src="../../../image/emoji.png"/>
+    </view>
+    <image class="chat icon" src="../../../image/chat.png"/>
+    <image class="collect icon" src="../../../image/collect.png"/>
+    <image class="share icon" src="../../../image/share.png"/>
+</view>

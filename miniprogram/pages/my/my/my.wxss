@@ -1,0 +1,31 @@
+/* miniprogram/pages/my/my.wxss */
+.container{
+    width: 100%;
+}
+
+.footer, .box{
+    width: 100%;
+}
+.box {
+    border-bottom: 10rpx solid rgb(219, 213, 213); 
+}
+.items .item{
+    width: 96%;
+    margin-left: 30rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.items .border{
+    border-bottom: 1rpx solid rgb(219, 213, 213);
+}
+.items .text{
+    font-size: 40rxp
+}
+.item image{
+    width: 60rpx;
+    height: 50rpx;
+    vertical-align: middle;
+}

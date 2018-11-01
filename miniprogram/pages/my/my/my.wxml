@@ -1,0 +1,51 @@
+<view class="container">
+    <view class="header box">
+        <view class="img">
+            <image url="" />
+        </view>
+        <view class="name"></view>
+    </view>
+
+    <view class="tabbar box"></view>
+
+    <view class="items box">
+        <view class="item border">
+            <view class="text">消息通知</view>
+            <image src="../../../image/right.png"/>
+        </view>
+        <view class="item border">
+            <view class="text">私信</view>
+            <image src="../../../image/right.png"/>
+        </view>
+        <view class="item">
+            <view class="text">阅读公益</view>
+            <image src="../../../image/right.png"/>
+        </view>
+    </view>
+
+    <view class="items box">
+         <view class="item border">
+            <view class="text">我的书架</view>
+            <image src="../../../image/right.png"/>
+        </view>
+        <view class="item border">
+            <view class="text">我的钱包</view>
+            <image src="../../../image/right.png"/>
+        </view>
+        <view class="item">
+            <view class="text">京东特供</view>
+            <image src="../../../image/right.png"/>
+        </view>
+    </view>
+
+    <view class="footer items">
+        <view class="item border">
+            <view class="text">我的钱包</view>
+            <image src="../../../image/right.png"/>
+        </view>
+        <view class="item">
+            <view class="text">京东特供</view>
+            <image src="../../../image/right.png"/>
+        </view>
+    </view>
+</view>

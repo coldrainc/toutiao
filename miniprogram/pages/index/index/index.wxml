@@ -1,0 +1,90 @@
+<import src="../../../components/container/container.wxml"></import>
+<import src="../../../components/buttons/buttons.wxml"></import>
+<view class="wrapper">
+<van-search value="{{ value }}" placeholder="请输入搜索关键词" 
+  use-action-slot
+  showaction="{{hidden}}"
+  bind:search="onSearch"
+  >
+  <view slot="action" bind:tap="onSearch">搜索</view>
+</van-search>
+
+<van-tabs active="1" bind:change="onChange" class="tabs">
+  <van-tab title="关注" data-active="{{actives.one}}">
+   <template is="container" data="{{news, hiddenLoading}}"></template>
+  </van-tab>
+
+  <van-tab title="推荐" data-active="{{actives.two}}">
+    <van-panel class="topping" title="{{topTitle}}" status="置顶" use-footer-slot bind:tap="showTopDetail" data-item="{{topNew_id}}">
+       <view class="images">
+          <image src="{{images[0]}}" />
+          <image src="{{images[1]}}" />
+          <image src="{{images[2]}}" />
+        </view>
+        <view solt="footer" class="footer">
+          <view class="author">{{topAuthor}}</view>
+          <view class="comment">评论{{topComment}}</view>
+          <view class="Date">{{topDate}}</view>
+        </view>
+    </van-panel>
+    <view class="container">
+      <loading hidden="{{hiddenLoading}}"></loading>
+      <view class="news" wx:for="{{news}}" wx:for-item="info" wx:key="info.new_id">
+        <van-panel class="new" title="{{info.title}}" use-footer-slot bind:tap="showDetail" data-item="{{info.contents}}">
+          <view class="images" wx:if="{{info.images.length > 0}}">
+            <image src="{{info.images[0]}}" />
+            <image src="{{info.images[1]}}" />
+            <image src="{{info.images[2]}}" />
+          </view>
+          <view solt="footer" class="footer">
+            <view class="author">{{info.author}}</view>
+            <view class="comment">评论{{info.comments}}</view>
+            <view class="Date">{{info.date}}</view>
+          </view>
+        </van-panel>
+      </view>
+    </view>
+  </van-tab>
+
+  <van-tab title="财经" data-active="{{actives.three}}">
+    <template is="container" data="{{news, hiddenLoading}}"></template>
+  </van-tab>
+
+  <van-tab title="股票" data-active="{{actives.four}}">
+    <template is="container" data="{{news, hiddenLoading}}"></template>
+  </van-tab>
+
+  <van-tab title="军事" data-active="{{actives.five}}">
+    <template is="container" data="{{news, hiddenLoading}}"></template>
+  </van-tab>
+
+  <van-tab title="科技" data-active="{{actives.six}}">
+    <template is="container" data="{{news, hiddenLoading}}"></template>
+  </van-tab>
+</van-tabs>
+  <view class="right" bind:tap="showMore">
+    <image src="../../../image/more.png" />
+  </view>
+  <van-popup class="popup" show="{{show}}" bind:tap="showMore" position="bottom" overlay-style="background: transparent">
+    <view class="popup-wrapper">
+      <view class="top">
+      <view class="top_my">
+        我的频道
+      </view>
+      <van-button plain type="danger" size="mini" round>编辑</van-button>
+      </view>
+      <template is="buttons" data="{{one: '关注', two: '推荐', three: '财经',four: '股票'}}"></template>
+      <template is="buttons" data="{{one: '军事', two: '科技', three: '国际',four: '科学'}}"></template>
+      <template is="buttons" data="{{one: '南昌', two: '小说', three: '游戏',four: '视频'}}"></template>
+      <template is="buttons" data="{{one: '热点', two: '直播', three: '娱乐',four: '懂车'}}"></template>
+      <template is="buttons" data="{{one: '体育', two: '健康', three: '房产',four: '时尚'}}"></template>
+      <template is="buttons" data="{{one: '头条', two: '问答', three: '图片',four: '特卖'}}"></template>
+      <template is="buttons" data="{{one: '精选', two: '时代', three: '国风',four: '视频'}}"></template>
+      <template is="buttons" data="{{one: '搞笑', two: '电影', three: '手机',four: '美食'}}"></template>
+      <van-cell title="频道推荐" value="点击添加内容" />
+      <template is="buttons" data="{{one: '军事', two: '科技', three: '国际',four: '科学'}}"></template>
+      <template is="buttons" data="{{one: '南昌', two: '小说', three: '游戏',four: '视频'}}"></template>
+      <template is="buttons" data="{{one: '南昌', two: '小说', three: '游戏',four: '视频'}}"></template>
+    </view>
+  </van-popup>
+</view>

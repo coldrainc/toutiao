@@ -1,0 +1,8 @@
+<template name="buttons">
+<view  class="buttons">
+    <button size="mini">{{one}}</button>
+    <button size="mini">{{two}}</button>
+    <button size="mini">{{three}}</button>
+    <button size="mini">{{four}}</button>
+</view>
+</template>

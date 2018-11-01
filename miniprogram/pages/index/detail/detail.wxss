@@ -1,0 +1,108 @@
+/* miniprogram/pages/index/detail/detail.wxss */
+.body{
+    margin: 0 20rpx;
+}
+.title {
+    font-size: 55rpx;
+}
+.header{
+    display: flex;
+    height: 200rpx;
+    /* justify-content: center; */
+    align-items: center;
+    /* background: black; */
+}
+.header image{
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 40rpx;
+    /* background-color: red; */
+}
+.header .nickname{
+    flex: 1;
+    font-weight: bold;
+    font-size: 36rpx;
+}
+.header Button{
+    width: 120rpx;
+    height: 67rpx;
+    font-size: 30rpx;
+    line-height: 67rpx;
+    text-align: center;
+    color: white;
+    background: #fa2323;
+}
+.footer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 200rpx;
+    background: red;
+}
+.footer Button{
+    font-size: 28rpx;
+    height: 70rpx;
+    width: 160rpx;
+    line-height: 70rpx;
+    text-align: center;
+    border-top-left-radius:80rpx; 
+    border-top-right-radius:80rpx; 
+    border-bottom-left-radius:80rpx; 
+    border-bottom-right-radius:80rpx; 
+}
+.bottom{
+    width: 100%;
+    height: 100rpx;
+    border-top: 1rpx solid rgb(189, 189, 189);
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.input{
+    width: 55%;
+    height: 70%;
+    /* flex: 1; */
+    margin-left: 20rpx;
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    /* border-radius: 20%; */
+    background: rgb(236, 232, 232);
+    border-top-left-radius:80rpx; 
+    border-top-right-radius:80rpx; 
+    border-bottom-left-radius:80rpx; 
+    border-bottom-right-radius:80rpx; 
+}
+.input input{
+    width: 70%;
+}
+.icon {
+    margin: 0 15rpx;
+}
+.write{
+    width: 55rpx;
+    height: 55rpx;
+    margin-left: 25rpx;
+    left: 20rpx;
+}
+.emoji{
+    width: 56rpx;
+    height: 56rpx;
+    margin-right: 25rpx;
+}
+.chat{
+    width: 80rpx;
+    height: 80rpx;
+}
+.collect{
+    width: 70rpx;
+    height: 70rpx;
+}
+.share{
+    width: 50rpx;
+    height: 50rpx;
+    margin-right: 20rpx;
+}

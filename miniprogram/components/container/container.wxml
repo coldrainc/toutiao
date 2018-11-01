@@ -1,0 +1,19 @@
+<template name="container">
+    <view class="container">
+        <loading hidden="{{hiddenLoading}}"></loading>
+        <view class="news" wx:for="{{news}}" wx:for-item="info" wx:key="id" bind:tap="showDetail" use-footer-slot>
+            <van-panel class="new" title="{{info.title}}">
+                <view class="images" wx:if="{{info.images.length > 0}}">
+                    <image src="{{info.images[0]}}"/>
+                    <image src="{{info.images[1]}}"/>
+                    <image src="{{info.images[2]}}"/>
+                </view>
+            </van-panel>
+            <view solt="footer" class="footer">
+                <view class="author">{{info.author}}</view>
+                <view class="comment">评论{{info.comments}}</view>
+                <view class="Date">{{info.date}}</view>
+            </view>
+        </view>
+    </view>
+</template>
