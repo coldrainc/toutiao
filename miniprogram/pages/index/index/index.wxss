@@ -5,6 +5,11 @@
     font-size: 100rpx;
     color: black;
 } */
+.hot{
+    color: red;
+    font-size: 40rpx;
+    font-weight: bold; 
+}
 .images{
     display: flex;
     justify-content: center;
@@ -15,29 +20,38 @@
     margin-left: 10rpx;
 }
 .footer{
+    width: 100%;
     display: flex;
     justify-content: space-around;
+    align-items: center;
     font-size: 35rpx;
     color: dimgrey;
 }
-.wrapper{
+/* .footer .new{
+    width: 100%;
+} */
+.tabs{
     position: relative;
 }
 .right{
     position: absolute;
     right: 0;
-    top: 125rpx;
-    width: 60rpx;
+    top: 20rpx;
+    width: 100rpx;
     height: 57rpx;
     background: white;
     z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-right: 20rpx; */
     /* box-shadow: -20rpx 0 gray; */
     /* background: white; */
 }
 .right image{
-    max-width: 100%;
-    max-height: 100%;
-    vertical-align: middle;
+    width: 60rpx;
+    height: 100%;
+    /* vertical-align: middle; */
 }
 .buttons{
     display: flex;

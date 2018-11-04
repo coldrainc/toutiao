@@ -1,38 +1,163 @@
 <import src="../../../wxParse/wxParse.wxml"></import>
 <view class="body">
+    <!-- 新闻显示主题 -->
     <view class="news">
+        
         <view class="title">
-            全球总决赛
+            {{detail.title}}
         </view>
         <view class="header">
-            <image src="../../../image/emoji.png" class="avatar"/>
+            <image src="{{detail.avatar}}" class="avatar"/>
             <view class="nickname">
-                实锤社
+                {{detail.author}}
             </view>
             <Button>关注</Button>
         </view>
         <view class="content">
             <!-- <template is="wxParse" data="{{wxParseData: article.nodes}}"></template> -->
+            {{detail.content}}
+            <image src="{{detail.images[0]}}" />
         </view>
+        <!-- 新闻结束时对新闻点赞等 -->
         <view class="footer">
-            <Button plain type="danger">编辑</Button>
-            <Button plain type="danger">不喜欢</Button>
-            <Button plain type="danger">微信</Button>
-            <Button plain type="danger">朋友圈</Button>
+            <view class="button like">
+                <image class="icon" src="../../../image/点赞.png"/>
+                <view class="cont">{{like}}</view>
+            </view>
+            <view class="button">
+                <image class="icon" src="../../../image/垃圾桶.png"/>
+                <view class="cont">不喜欢</view>
+            </view>
+            <view class="button">
+                <image class="icon" src="../../../image/微信.png"/>
+                <view class="cont">微信</view>
+            </view>
+            <view class="button">
+                <image class="icon" src="../../../image/朋友圈.png"/>
+                <view class="cont">朋友圈</view>
+            </view>
         </view>
+
+    </view>
+    <!-- 新闻的评论 -->
+    <view class="comments">
+        <view class="comment">
+            <image src="../../../image/emoji.png"/>
+            <view class="center">
+                <view class="center__nickname">coding</view>
+                <view class="center__comment">我爱敲代码，我爱敲代码</view>
+                 <image src="{{comment_img}}" wx:if="{{comment_img.length > 0}}"/>
+                <view class="center__buttom">1小时前</view>
+            </view>
+            <view class="like">
+                <image class="dz" src="../../../image/点赞.png"/>
+                <view class="cont">25</view>
+            </view>
+        </view>
+        <view class="comment">
+            <image src="../../../image/emoji.png"/>
+            <view class="center">
+                <view class="center__nickname">coding</view>
+                <view class="center__comment">........我爱敲代码，我爱敲代码</view>
+                <image src="{{comment_img}}" wx:if="{{comment_img.length > 0}}"/>
+                <view class="center__buttom">1小时前</view>
+                <!-- <view wx:if="{{imga}}"></view> -->
+            </view>
+            <view class="like">
+                <image class="dz" src="../../../image/点赞.png"/>
+                <view class="cont">600</view>
+            </view>
+        </view>
+    </view>
+    <view class="block"></view>
+</view>
+    <!-- 固定在新闻详情页底部的输入框和分享按钮 -->
+<view class="bottom">
+    <!-- 输入评论 -->
+    <view class="input">
+        <image  class="write" src="../../../image/write.png" bindtap="inputContent"/>
+        <input type="text" placeholder="写评论..." bindtap="inputContent"  focus='ture'/>
+        <image class="emoji" src="../../../image/emoji.png" bindtap="selectEmoji"/>
+        <van-popup
+            show="{{ input_popup }}"
+            position="bottom"
+            z-index="1000"
+            bindtap="inputContent"
+            overlay-style="background: transparent"
+        >
+            <view class="pop__top">
+                <input class="pop__input" 
+                    type="text"
+                    placeholder="优质评论将会被优先展示"
+                    placeholder-class="phClass"
+                    bindtap="inputContent"
+                    bindinput="getValue"
+                    adjust-position
+                />
+                <view class="pop__submit">发布</view>
+            </view>
+            <view class="pop__bottom">
+                <van-checkbox  use-icon-slot 
+                    value="{{ checked }}"
+                    bind:change="onChange"
+                >
+                同时转发
+                    <image
+                        slot="icon"
+                        src="{{ checked ? icon.active : icon.normal }}"
+                    />
+                </van-checkbox>
+                <view class="pop_icon">
+                    <image src="../../../image/图片.png" bindtap="upload"/>
+                    <image src="../../../image/@.png" />
+                    <image src="../../../image/井号.png" />
+                    <image src="../../../image/GIF.png" />
+                    <image src="../../../image/emoji1.png" />
+                </view>
+            </view>
+
+        </van-popup>
     </view>
 
-    <view class="comment">
-    
+    <!-- 进入新闻详情页评论部分 -->
+    <view bindtap="clickComment">
+        <image class="chat icon" src="../../../image/chat.png"/>
     </view>
-</view>
-<view class="bottom">
-    <view class="input">
-        <image  class="write" src="../../../image/write.png"/>
-        <input type="text" placeholder="写评论..."/>
-        <image class="emoji" src="../../../image/emoji.png"/>
+    <!-- 收藏新闻 -->
+    <view bindtap="clickCollect">
+        <image wx:if="{{!collect}}" class="collect icon" src="../../../image/collect.png"/>
+        <image wx:else class="collect icon" src="../../../image/collect1.png"/>
     </view>
-    <image class="chat icon" src="../../../image/chat.png"/>
-    <image class="collect icon" src="../../../image/collect.png"/>
-    <image class="share icon" src="../../../image/share.png"/>
+    <!-- 分享新闻 -->
+    <view class="popup">
+        <image class="share icon" src="../../../image/share.png" bindtap="clickShare"/>
+        <van-popup
+            show="{{ show_popup }}"
+            position="bottom"
+            z-index="1000"
+            bindtap="clickShare"
+            custom-style="background: transparent"
+            overlay-style="background-color:rgba(0,0,0,0.1);"
+        >
+            <view class="forward">
+                <view class="tt item">
+                    <image src="../../../image/今日头条.png" />
+                    <view class="forward__object">转发到头条</view>
+                </view>
+                <view class="pyq item">
+                     <image src="../../../image/朋友圈.png" />
+                    <view class="forward__object">朋友圈</view>
+                </view>
+                <view class="wx item">
+                     <image src="../../../image/微信.png" />
+                    <view class="forward__object">微信</view>
+                </view>
+                <view class="dd item">
+                     <image src="../../../image/钉钉.png" />
+                    <view class="forward__object">钉钉</view>
+                </view>
+            </view>
+            <view class="cancle">取消</view>
+        </van-popup>
+    </view>
 </view>
