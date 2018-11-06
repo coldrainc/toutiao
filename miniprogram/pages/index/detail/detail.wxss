@@ -23,8 +23,9 @@
     font-weight: bold;
     font-size: 36rpx;
 }
-.header Button{
-    width: 120rpx;
+.header .btn{
+    padding: 0;
+    width: 110rpx;
     height: 67rpx;
     font-size: 28rpx;
     line-height: 67rpx;
@@ -32,6 +33,18 @@
     color: white;
     background: #fa2323;
 }
+.header .btn1{
+    padding: 0;
+    width: 110rpx;
+    height: 67rpx;
+    font-size: 28rpx;
+    line-height: 67rpx;
+    text-align: center;
+    color: rgb(179, 177, 177);
+    border: 0.1rpx solid rgb(209, 206, 206);
+    background: rgb(252, 252, 252);
+}
+
 /* .content{
     margin-bottom: 20rpx;
 } */

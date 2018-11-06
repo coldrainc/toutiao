@@ -74,13 +74,16 @@
     </view>
   </van-tabs>
   <!-- 点击按钮显示弹出层 -->
-  <van-popup class="popup" show="{{show}}" bind:tap="showMore" position="bottom" overlay-style="background: transparent">
+  <van-popup class="popup" show="{{show}}" position="bottom" overlay-style="background: transparent">
+    <view class="cancle">
+      <image src="../../../image/cancle.png" bind:tap="showMore"/>
+    </view>
     <view class="popup-wrapper">
       <view class="top">
-      <view class="top_my">
-        我的频道
-      </view>
-      <van-button plain type="danger" size="mini" round>编辑</van-button>
+        <view class="top_my">
+          我的频道
+        </view>
+        <van-button plain type="danger" size="mini" round>编辑</van-button>
       </view>
       <template is="buttons" data="{{one: '关注', two: '推荐', three: '财经',four: '股票'}}"></template>
       <template is="buttons" data="{{one: '军事', two: '科技', three: '国际',four: '科学'}}"></template>

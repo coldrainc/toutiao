@@ -1,11 +1,13 @@
 var WxParse = require('../../../wxParse/wxParse.js');
 const db = wx.cloud.database()
 const photos = db.collection('photos')
+const comments = db.collection('comments')
 // wx.cloud.init();
 // var db = wx.cloud.database()
 // var collection = db.collection('news')
 // 此处碰到的问题可以在写文章的时候也提一下，
 // 直接在page的js文件中获取的数据有权限问题
+// 需要将需要获取的集合的权限改为所有人才能获取， 或者用云函数获取需要带的集合
 Page({
 
   /**
@@ -18,16 +20,22 @@ Page({
     like: 0,
     collect: false,
     show_popup: false,
+    input_show: false,
     input_popup: false,
     checked: false,
+    focus: false,
     icon: {
-      normal: '../../../image/复选框.png',
-      active: '../../../image/复选框选中.png'
-    }
+      normal: '../../../image/repeat.png',
+      active: '../../../image/selected.png'
+    },
+    selected: false,
+    color: '',
+    submit: false
   },
   getDetail: function() { // 获取详情需要展示的信息
     let new_id = this.data.new_id;
     let like = Math.floor(Math.random() * 100);
+    // console.log(new_id)
     wx.cloud.callFunction({
       name: 'getDetail',
       data: {
@@ -42,11 +50,76 @@ Page({
         like: like
       })
     })
+    comments.where({
+      new_id: new_id
+    }).get({
+      success: (res) => {
+        let comm = res.data[0].comments;
+        console.log(comm)
+        this.setData({
+          comms: comm
+        })
+      }
+    })
     // console.log(this.data.detail)
+  },
+  selected: function() {
+    let selected = this.data.selected;
+    this.setData({
+      selected: !selected
+    })
   },
   inputContent: function() { // 点击输入框和图标控制是否弹出
     this.setData({
-      input_popup: !this.data.input_popup
+      input_popup: !this.data.input_popup,
+      input_show: !this.data.input_show,
+      focus: true
+    })
+  },
+  bindKeyInput: function(e) { // 获取输入框的值，有值的话将改变按钮的颜色
+      // console.log(e)
+    if(e.detail.value){
+      this.setData({
+        inputValue: e.detail.value,
+        color: '#1080C4',
+        submit: true
+      })
+    }else{
+      this.setData({
+        color: 'color: rgb(187, 177, 177);',
+        submit: false
+      })
+    }
+  },
+
+  submit: function() { // 实现评论功能，将发布的评论同步点到数据
+    let value = this.data.value;
+    let new_id = this.data.new_id;
+    // let new_id = '6594157273642172936'
+    comments.where({
+      new_id: new_id
+    }).get({
+      success: (res) => {
+        // console.log(res)
+        let comm = res.data[0].comments;
+        let people = {
+          value: value
+        }
+        console.log(people)
+        comm.unshift(people);
+        this.setData({
+          comms: comm
+        })
+        comments.doc(new_id).update({
+          data:{
+            comments: comm
+          },
+          success: function(res) {
+            console.log(res.data)
+          }
+        })
+        // console.log(comments)
+      }
     })
   },
   selectEmoji: function() { // 点击emoji图标显示选择emoji框
