@@ -10,54 +10,26 @@ Page({
       hidden: false,
       hiddenLoading: false,
       hasMore: true,
+      cnews: [],
+      counter: 1,
       news: [],
       count: 1,
-      counter: 1,
-      cnews: [],
+      news1: [],
+      count1: 1,
       show: false,
-      actives: {
-        0: false,
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false
-      },
-      active: '1',
+      active1: '',
+      active2: '',
       focus: false,
       placeholder: '请输入想要搜索的内容',
       num: 0,
-      datas: {}
+      datas: {},
+      title: 'news',
+      num: 1,
     },
      /**
      * 从数据库获取每次要求获取的数据并保存到data.news中
      */
-    getDatas: function(collection) { // 从数据库获取新闻信息获取新闻
-      let count = this.data.count
-      wx.cloud.callFunction({
-        name: collection,
-        data: {
-          count
-        }
-      }).then(res => {
-        // console.log(res)
-        let news = this.data.news
-        let data = res.result.data
-        // console.log(data)
-        for(let i = 0; i < data.length; i++) {
-          // console.log(data[i].date)
-          data[i].date = data[i].date.slice(0, 10)
-          news.push(data[i])
-          // console.log(data[i].images)
-          this.imgCheck(data[i].images, data.new_id, 'news')
-        }
-        this.setData({
-          hiddenLoading: true,
-          news: news,
-          count: count+1
-        })
-      })
-    },
+    
     imgCheck: function(images, new_id, title) { // 检查图片是否和合法
       // console.log(images)
       wx.cloud.callFunction({
@@ -121,28 +93,75 @@ Page({
     onChange(event) { // 获取tab改变事件来使获取不同主题的新闻
       // console.log(event)
       // console.log(this.data.active.one);
+
       let index = event.detail.index;
       let title = event.detail.title;
-      let active = this.data.actives[index];
-      let setting = 'actives['+index+']';
-      if(!active){
+      // let active1 = this.data.active1;
+      let cnews = this.data.cnews;
+      let counter = this.data.counter;
+      let active1 = this.data.active1;
+      let active2 = this.data.active2;
+      // console.log(active1 + "ac", active2)
+      // console.log(title)
+      this.setData({
+        cnews: [],
+        counter: 1
+      })
+      if(title == "财经"){
         this.setData({
-          hiddenLoading: false,
-          [setting]: true,
-          cnews: []
+          title: 'finance',
+          active2: 'finance'
         })
-
-        if(title == "财经"){
+        if(active1 != 'finance'){
+          this.setData({
+            news: cnews,
+            count: counter,
+            hiddenLoading: false,
+          })
           this.module('finance')
-        }else if(title == "股票"){
+        }
+      }else if(title == "股票"){
+        this.setData({
+          title: 'stock',
+          active2: 'stock',
+        })
+        if(active1 != 'stock'){
+          this.setData({
+            news: cnews,
+            count: counter,
+            hiddenLoading: false,
+          })
           this.module('stock')
-        }else if(title == "军事"){
+        }
+      }else if(title == "军事"){
+        this.setData({
+          title: 'military',
+          active2: 'military'
+        })
+        if(active1 != 'military'){
+          this.setData({
+            news: cnews,
+            count: counter,
+            hiddenLoading: false,
+          })
           this.module('military')
-        }else{
-          this.getDatas("getData")
+        }
+      }else if(title == "推荐"){
+        this.setData({
+          title: 'news',
+          active2: 'news'
+        })
+        if(active1 != 'news'){
+          this.setData({
+            news: cnews,
+            count: counter,
+            hiddenLoading: false,
+          })
+          this.module('news')
         }
       }
-      // console.log(active)
+      console.log(this.data.active1, this.data.active2);
+            // console.log(active)
       // console.log(this.data.actives);
       // wx.showToast({
       //   title: `切换到标签 ${event.detail.index + 1}`,
@@ -201,7 +220,11 @@ Page({
      */
     onLoad: function (options) {
       this.getTopping()
-      this.getDatas("getData")
+      // this.getDatas("getData")
+      this.module('news');
+      this.setData({
+        active1: 'news'
+      })
       db.collection('hots').get()
         .then(res => {
           this.setData({
@@ -222,7 +245,10 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-  
+      let active2 = this.data.active2;
+      this.setData({
+        active1: active2,
+      })
     },
   
   
@@ -234,19 +260,21 @@ Page({
         title: '推荐中',
         image: '../../../image/加载.png'
       })
+      let title = this.data.title;
       wx.cloud.callFunction({
-        name: 'getData',
+        name: 'module',
         data: {
-          count: 1
+          counter: 1,
+          title: title
         }
       }).then(res => {
         // console.log(res)
-        let news = this.data.news
+        let cnews = this.data.cnews
         let datas = res.result.data
-        let data = datas.concat(news)
+        let data = datas.concat(cnews)
         this.setData({
           hiddenLoading: true,
-          news: data,
+          cnews: data,
         })
       })
     },
@@ -259,7 +287,11 @@ Page({
         title: '加载更多',
         image: '../../../image/加载.png'
       })
-      this.getDatas("getData")
+      // this.getDatas("getData")
+      let title = this.data.title
+      if(title){
+        this.module(title)
+      }
     },
   
     /**

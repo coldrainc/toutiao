@@ -1,4 +1,5 @@
 var WxParse = require('../../../wxParse/wxParse.js');
+wx.cloud.init()
 const db = wx.cloud.database()
 const photos = db.collection('photos')
 const comments = db.collection('comments')
@@ -30,7 +31,7 @@ Page({
     },
     selected: false,
     color: '',
-    submit: false
+    submit: false,
   },
   getDetail: function() { // 获取详情需要展示的信息
     let new_id = this.data.new_id;
@@ -93,7 +94,7 @@ Page({
   },
 
   submit: function() { // 实现评论功能，将发布的评论同步点到数据
-    let value = this.data.value;
+    let value = this.data.inputValue;
     let new_id = this.data.new_id;
     // let new_id = '6594157273642172936'
     comments.where({
@@ -101,32 +102,69 @@ Page({
     }).get({
       success: (res) => {
         // console.log(res)
-        let comm = res.data[0].comments;
+        let comms= res.data[0].comments;
         let people = {
-          value: value
+          content: value,
+          like: 0
         }
-        console.log(people)
-        comm.unshift(people);
+        comms.unshift(people);
+        // console.log(comm)
         this.setData({
-          comms: comm
+          comms: comms
         })
-        comments.doc(new_id).update({
-          data:{
-            comments: comm
-          },
-          success: function(res) {
-            console.log(res.data)
+        wx.cloud.callFunction({
+          name: 'updateComments',
+          data: {
+            new_id: new_id,
+            comms: comms
           }
+        }).then(res =>{
+          console.log(res)
         })
+        // console.log(new_id, comm)
+        // comments.where({
+        //   new_id: new_id
+        // }).update({
+        //   data:{
+        //     comments: comm
+        //   },
+        //   success: (res) => {
+        //     console.log(res)
+        //   }
+        // })
+        
         // console.log(comments)
       }
+    })
+  },
+  addLike: function(e) { // 点击点赞图标增加点赞数同时保存到数据库
+    let like = e.currentTarget.dataset.item;
+    let new_id = this.data.new_id;
+    // console.log(e)
+    let comms = this.data.comms;
+    comms[like].like = comms[like].like + 1;
+    this.setData({
+      comms: comms
+    })
+    // console.log(comms)
+    wx.cloud.callFunction({
+      name: 'updateComments',
+      data: {
+        new_id: new_id,
+        comms: comms
+      }
+    }).then(res =>{
+      console.log(res)
     })
   },
   selectEmoji: function() { // 点击emoji图标显示选择emoji框
 
   },
-  clickComment: function() {
-
+  clickComment: function() { // 跳到当前页面的评论区
+    this.setData({
+      toView: 'test'
+    })
+    console.log(this.data.toView)
   },
   clickCollect: function() {// 是否收藏文章
     let collect = this.data.collect;
@@ -202,6 +240,12 @@ Page({
    */
 
   onLoad: function (options) {
+    // setTimeout(() => {
+    //   this.setData({
+    //     toView: 'test'
+    //   })
+    //   console.log('dfdfsdf');
+    // }, 2000);
     // console.log(options)
     this.setData({
       new_id: options.contentId

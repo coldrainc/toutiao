@@ -32,36 +32,19 @@
           </view>
       </van-panel>
 
-      <view class="container">
-        <loading hidden="{{hiddenLoading}}"></loading>
-        <view class="news" wx:for="{{news}}" wx:for-item="info" wx:key="info.new_id">
-          <van-panel class="new" title="{{info.title}}" use-footer-slot bind:tap="showDetail" data-item="{{info.new_id}}">
-            <view class="images" wx:if="{{info.images.length > 0}}">
-              <image src="{{info.images[0]}}" />
-              <image src="{{info.images[1]}}" />
-              <image src="{{info.images[2]}}" />
-            </view>
-            <view wx:else></view>
-            <view solt="footer" class="footer">
-              <view class="author">{{info.author}}</view>
-              <view class="comment">评论{{info.comments}}</view>
-              <view class="Date">{{info.date}}</view>
-            </view>
-          </van-panel>
-        </view>
-      </view>
+      <template is="container" data="{{news: active1 == 'news'?news:cnews, hiddenLoading}}"></template>
     </van-tab>
 
     <van-tab title="财经" >
-      <template is="container" data="{{news:cnews, hiddenLoading}}"></template>
+      <template is="container" data="{{news: active1 == 'finance'?news:cnews, hiddenLoading}}"></template>
     </van-tab>
 
     <van-tab title="股票" >
-      <template is="container" data="{{news:cnews, hiddenLoading}}"></template>
+      <template is="container" data="{{news: active1 == 'stock'?news:cnews, hiddenLoading}}"></template>
     </van-tab>
 
     <van-tab title="军事">
-      <template is="container" data="{{news:cnews, hiddenLoading}}"></template>
+      <template is="container" data="{{news: active1 == 'military'?news:cnews, hiddenLoading}}"></template>
     </van-tab>
 
     <van-tab title="科技" data-active="{{actives.six}}">

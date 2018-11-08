@@ -1,12 +1,35 @@
 <view class="container">
     <view class="header box">
-        <view class="img">
-            <image url="" />
+        <view class="top">
+            <image class="avatar"src="../../../image/emoji.png"/>
+            <view class="name">
+                <view class="nicknam">nickname</view>
+                <button>申请认证</button>
+            </view>
+            <image class="icon" src="../../../image/right.png" />
         </view>
-        <view class="name"></view>
+        <view class="button">
+        </view>
     </view>
 
-    <view class="tabbar box"></view>
+    <view class="tabbar box">
+        <view class="tabbar__item tabbar__item-1">
+            <image src="../../../image/collect1.png" />
+            <view class="text">我的收藏</view>
+        </view>
+         <view class="tabbar__item tabbar__item-2">
+            <image src="../../../image/comment.png" />
+            <view class="text">我的评论</view>
+        </view>
+        <view class="tabbar__item tabbar__item-3">
+            <image src="../../../image/myLike.png" />
+            <view class="text">我的点赞</view>
+        </view>
+        <view class="tabbar__item tabbar__item-4">
+            <image src="../../../image/history.png" />
+            <view class="text">浏览历史</view>
+        </view>
+    </view>
 
     <view class="items box">
         <view class="item border">
@@ -19,7 +42,10 @@
         </view>
         <view class="item">
             <view class="text">阅读公益</view>
-            <image src="../../../image/right.png"/>
+            <view class="right">
+                <view class="txt">今日阅读80分钟</view>
+                <image src="../../../image/right.png"/>
+            </view>
         </view>
     </view>
 
@@ -30,21 +56,27 @@
         </view>
         <view class="item border">
             <view class="text">我的钱包</view>
-            <image src="../../../image/right.png"/>
+            <view class="right">
+                <view class="txt">手机设置</view>
+                <image src="../../../image/right.png"/>
+            </view>
         </view>
         <view class="item">
             <view class="text">京东特供</view>
-            <image src="../../../image/right.png"/>
+            <view class="right">
+                <view class="txt">年终购物狂欢节</view>
+                <image src="../../../image/right.png"/>
+            </view>
         </view>
     </view>
 
     <view class="footer items">
         <view class="item border">
-            <view class="text">我的钱包</view>
+            <view class="text">用户反馈</view>
             <image src="../../../image/right.png"/>
         </view>
         <view class="item">
-            <view class="text">京东特供</view>
+            <view class="text">系统设置</view>
             <image src="../../../image/right.png"/>
         </view>
     </view>

@@ -2,7 +2,46 @@
 .container{
     width: 100%;
 }
-
+.header {
+    height: 280rpx;
+}
+.top {
+    width: 96%;
+    margin: 25rpx auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.top .avatar {
+    width: 120rpx;
+    height: 120rpx;
+}
+.top .name{
+    flex: 1;
+    margin-left: 10rpx;
+}
+.name .nickname {
+    margin-bottom: 10rpx;
+}
+.name button {
+    height: 45rpx;
+    width: 130rpx;
+    font-size: 22rpx;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    line-height: 45rpx;
+    color: white;
+    background-color: #EE2D1B;
+    border-top-left-radius:80rpx; 
+    border-top-right-radius:80rpx; 
+    border-bottom-left-radius:80rpx; 
+    border-bottom-right-radius:80rpx;   
+}
+.top .icon{
+    width: 50rpx;
+    height: 42rpx;
+}
 .footer, .box{
     width: 100%;
 }
@@ -24,8 +63,62 @@
 .items .text{
     font-size: 40rxp
 }
+.right{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.right .txt{
+    color: rgb(194, 189, 189);
+    font-size: 32rpx;
+
+}
 .item image{
-    width: 60rpx;
-    height: 50rpx;
+    width: 50rpx;
+    height: 42rpx;
     vertical-align: middle;
+}
+
+.tabbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 160rpx;
+}
+.tabbar__item {
+    position: relative;
+    width: 25%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 30rpx;
+    text-align: center;
+}
+.tabbar__item image {
+    vertical-align: middle;
+}
+.tabbar__item-1 image{
+    width: 60rpx;
+    height: 60rpx;
+}
+.tabbar__item-2 image {
+    width: 55rpx;
+    height: 55rpx;
+}
+.tabbar__item-3 image {
+    position: absolute;
+    width: 80rpx;
+    height: 80rpx;
+    top: -18rpx;
+}
+.tabbar__item-3 .text{
+    position: absolute;
+    bottom: 0;
+}
+.tabbar__item-4 image {
+    width: 55rpx;
+    height: 55rpx;
 }
