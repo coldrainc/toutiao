@@ -83,7 +83,10 @@
     width: 50rpx;
     height: 50rpx;
 }
-
+.like .icon1{
+    width: 70rpx;
+    height: 70rpx;
+}
 .comment{
     display: flex;
     margin-bottom: 40rpx;
@@ -104,10 +107,15 @@
 }
 .comment .like{
     height: 100%;
-    width: 20%;
+    width: 150rpx;
     /* background: red; */
     display: flex;
     justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+.comment .cont{
+    text-align: center;
 }
 .comment .like .dz{
     width: 50rpx;

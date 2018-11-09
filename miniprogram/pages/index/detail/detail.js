@@ -3,6 +3,7 @@ wx.cloud.init()
 const db = wx.cloud.database()
 const photos = db.collection('photos')
 const comments = db.collection('comments')
+const app = getApp()
 // wx.cloud.init();
 // var db = wx.cloud.database()
 // var collection = db.collection('news')
@@ -32,10 +33,14 @@ Page({
     selected: false,
     color: '',
     submit: false,
+    islike: false,
+    comlike: false,
+    n: 0,
+    num: 0
   },
   getDetail: function() { // 获取详情需要展示的信息
     let new_id = this.data.new_id;
-    let like = Math.floor(Math.random() * 100);
+    let like = 100;
     // console.log(new_id)
     wx.cloud.callFunction({
       name: 'getDetail',
@@ -63,6 +68,21 @@ Page({
       }
     })
     // console.log(this.data.detail)
+  },
+  like: function() {
+    let like = this.data.like;
+    let islike = this.data.islike;
+    let num = this.data.num;
+    if(num%2 == 1){
+      like++
+    }else{
+      like--
+    }
+    this.setData({
+      like: like,
+      islike: !islike,
+      num: num++
+    })
   },
   selected: function() {
     let selected = this.data.selected;
@@ -96,6 +116,7 @@ Page({
   submit: function() { // 实现评论功能，将发布的评论同步点到数据
     let value = this.data.inputValue;
     let new_id = this.data.new_id;
+    let userInfo = this.data.userInfo
     // let new_id = '6594157273642172936'
     comments.where({
       new_id: new_id
@@ -105,7 +126,9 @@ Page({
         let comms= res.data[0].comments;
         let people = {
           content: value,
-          like: 0
+          like: 0,
+          avatar: userInfo.avatarUrl,
+          nickname: userInfo.nickname
         }
         comms.unshift(people);
         // console.log(comm)
@@ -121,19 +144,7 @@ Page({
         }).then(res =>{
           console.log(res)
         })
-        // console.log(new_id, comm)
-        // comments.where({
-        //   new_id: new_id
-        // }).update({
-        //   data:{
-        //     comments: comm
-        //   },
-        //   success: (res) => {
-        //     console.log(res)
-        //   }
-        // })
-        
-        // console.log(comments)
+
       }
     })
   },
@@ -141,10 +152,18 @@ Page({
     let like = e.currentTarget.dataset.item;
     let new_id = this.data.new_id;
     // console.log(e)
+    let n = this.data.n;
+    let comlike = this.data.comlike;
     let comms = this.data.comms;
-    comms[like].like = comms[like].like + 1;
+    if(n%2 == 1) {
+      comms[like].like = comms[like].like + 1;
+    }else{
+      comms[like].like = comms[like].like - 1;
+    }
     this.setData({
-      comms: comms
+      comms: comms,
+      comlike: !comlike,
+      n: n+1
     })
     // console.log(comms)
     wx.cloud.callFunction({
@@ -240,86 +259,38 @@ Page({
    */
 
   onLoad: function (options) {
-    // setTimeout(() => {
-    //   this.setData({
-    //     toView: 'test'
-    //   })
-    //   console.log('dfdfsdf');
-    // }, 2000);
-    // console.log(options)
+    
     this.setData({
       new_id: options.contentId
     });
     // console.log(this.data.new_id)
     this.getDetail();
-    // console.log(this.data.detail)
-    // var that = this;
-    // var article = this.data.article;
-    // wx.request({
-    //   url: options.contentId,
-    //   method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-    //   // header: {}, // 设置请求的 header
-    //   // header:{
-    //   //   "User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
-    //   //   "Accept": "text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,*/*;q=0.8"
-    //   // },
-    //   header: {
-    //     'user-agent': 'Mozilla / 5.0(Windows NT 10.0; WOW64) AppleWebKit / 537.36(KHTML, likeGecko) Chrome / 53.0.2785.104Safari / 537.36Core / 1.53.4882.400QQBrowser / 9.7.13059.400',
-    //     'Accept': "text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,*/*;q=0.8"
-    //   },
-    //   success: function(res){
-    //     // success
-    //     // console.log(res);
-    //     var Reg = /index-middle">(.*?)<div ad-cursor/g;
-    //     var artical = res.data;
-    //     var patt = Reg.test(artical);
-    //     // console.log(options.contentId)
-    //     console.log(artical)
-    //     // console.log(patt);
-    //     // WxParse.wxParse('article', 'html', artical, that, 5)
-    //   },
-    //   fail: function() {
-    //     // fail
-    //   },
-    //   complete: function() {
-    //     // complete
-    //   }
-    // })
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+    } else if (this.data.canIUse){
+      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      app.userInfoReadyCallback = res => {
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+      }
+    } else {
+      // 在没有 open-type=getUserInfo 版本的兼容处理
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          this.setData({
+            userInfo: res.userInfo,
+            hasUserInfo: true
+          })
+        }
+      })
+    }
   },
 
   /**

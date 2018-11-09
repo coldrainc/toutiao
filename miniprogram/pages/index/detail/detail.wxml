@@ -31,8 +31,9 @@
             </view>
             <!-- 新闻结束时对新闻点赞等 -->
             <view class="footer">
-                <view class="button like">
-                    <image class="icon" src="../../../image/like.png"/>
+                <view class="button like" bind:tap="like">
+                    <image class="icon" wx:if="{{!islike}}" src="../../../image/like.png"/>
+                    <image class="icon1" wx:else src="../../../image/selectedLike.png"/>
                     <view class="cont">{{like}}</view>
                 </view>
                 <view class="button">
@@ -79,8 +80,9 @@
                     <view class="center__buttom">1小时前</view>
                     <!-- <view wx:if="{{imga}}"></view> -->
                 </view>
-                <view class="like">
-                    <image class="dz" src="../../../image/like.png" bind:tap="addLike" data-item="{{index}}"/>
+                <view class="like" bind:tap="addLike" data-item="{{index}}">
+                    <image class="dz" src="../../../image/like.png" wx:if="{{!comlike}}"/>
+                    <image class="icon1" wx:else src="../../../image/selectedLike.png"/>
                     <view class="cont">{{comm.like}}</view>
                 </view>
             </view>

@@ -3,7 +3,19 @@
     width: 100%;
 }
 .header {
-    height: 280rpx;
+    height: 300rpx;
+}
+.login>button{
+    background: red;
+    color: white;
+    font-weight: bold;
+    height: 180rpx;
+    width: 180rpx;
+    text-align: center;
+    line-height: 180rpx;
+    padding: 0;
+    border-radius: 50%;
+    margin-top: 60rpx;
 }
 .top {
     width: 96%;
@@ -15,6 +27,7 @@
 .top .avatar {
     width: 120rpx;
     height: 120rpx;
+    border-radius: 50%;
 }
 .top .name{
     flex: 1;
@@ -36,11 +49,26 @@
     border-top-left-radius:80rpx; 
     border-top-right-radius:80rpx; 
     border-bottom-left-radius:80rpx; 
-    border-bottom-right-radius:80rpx;   
+    border-bottom-right-radius:80rpx;
+    bottom: 0;   
 }
 .top .icon{
     width: 50rpx;
     height: 42rpx;
+}
+.bottom {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.bottom .num{
+    text-align: center;
+    font-size: 40rpx;
+    font-weight: bold;
+}
+.bottom .text{
+    font-size: 26rpx;
+    text-align: center;
 }
 .footer, .box{
     width: 100%;
@@ -70,7 +98,7 @@
     height: 100%;
 }
 .right .txt{
-    color: rgb(194, 189, 189);
+    color: rgb(168, 161, 161);
     font-size: 32rpx;
 
 }

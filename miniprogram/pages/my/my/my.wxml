@@ -1,14 +1,42 @@
 <view class="container">
     <view class="header box">
-        <view class="top">
-            <image class="avatar"src="../../../image/emoji.png"/>
-            <view class="name">
-                <view class="nicknam">nickname</view>
-                <button>申请认证</button>
+        <view class="login">
+             <button wx:if="{{!hasUserInfo && canIUse}}" 
+                open-type="getUserInfo" 
+                bindgetuserinfo="getUserInfo">
+                 登录
+             </button>
+
+            <view wx:else>
+                <view class="top">
+                    <image class="avatar"src="{{userInfo.avatarUrl}}"/>
+                    <view class="name">
+                        <view class="nicknam">{{userInfo.nickname}}</view>
+                        <button>申请认证</button>
+                    </view>
+                    <image class="icon" src="../../../image/right.png" />
+                </view>
+                
+                <view class="bottom">
+                    <view class="bottom__item">
+                        <view class="num">200</view>
+                        <view class="text">头条</view>
+                    </view>
+                    <view class="bottom__item">
+                        <view class="num">100</view>
+                        <view class="text">关注</view>
+                    </view>
+                    <view class="bottom__item">
+                        <view class="num">89</view>
+                        <view class="text">粉丝</view>
+                    </view>
+                    <view class="bottom__item">
+                        <view class="num">707</view>
+                        <view class="text">获赞</view>
+                    </view>
+                </view>
             </view>
-            <image class="icon" src="../../../image/right.png" />
-        </view>
-        <view class="button">
+        
         </view>
     </view>
 
