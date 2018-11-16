@@ -10,7 +10,7 @@
 	},
 	"appid": "wx67f286e9a19c3b0e",
 	"projectname": "toutiao1",
-	"libVersion": "2.2.5",
+	"libVersion": "2.4.0",
 	"condition": {
 		"search": {
 			"current": -1,

@@ -7,7 +7,6 @@ const app = getApp()
 // wx.cloud.init();
 // var db = wx.cloud.database()
 // var collection = db.collection('news')
-// 此处碰到的问题可以在写文章的时候也提一下，
 // 直接在page的js文件中获取的数据有权限问题
 // 需要将需要获取的集合的权限改为所有人才能获取， 或者用云函数获取需要带的集合
 Page({
@@ -34,17 +33,18 @@ Page({
     color: '',
     submit: false,
     islike: false,
-    comlike: false,
-    n: 0,
-    num: 0
+    likeItem: [],
+    num: 1,
   },
   getDetail: function() { // 获取详情需要展示的信息
     let new_id = this.data.new_id;
+    let title = this.data.title;
     let like = 100;
     // console.log(new_id)
     wx.cloud.callFunction({
       name: 'getDetail',
       data: {
+        title: title,
         new_id: new_id
       }
     }).then(res => {
@@ -61,7 +61,7 @@ Page({
     }).get({
       success: (res) => {
         let comm = res.data[0].comments;
-        console.log(comm)
+        // console.log(comm)
         this.setData({
           comms: comm
         })
@@ -78,10 +78,11 @@ Page({
     }else{
       like--
     }
+    num = num + 1;
     this.setData({
       like: like,
       islike: !islike,
-      num: num++
+      num: num
     })
   },
   selected: function() {
@@ -118,52 +119,70 @@ Page({
     let new_id = this.data.new_id;
     let userInfo = this.data.userInfo
     // let new_id = '6594157273642172936'
-    comments.where({
-      new_id: new_id
-    }).get({
-      success: (res) => {
-        // console.log(res)
-        let comms= res.data[0].comments;
-        let people = {
-          content: value,
-          like: 0,
-          avatar: userInfo.avatarUrl,
-          nickname: userInfo.nickname
-        }
-        comms.unshift(people);
-        // console.log(comm)
-        this.setData({
-          comms: comms
-        })
-        wx.cloud.callFunction({
-          name: 'updateComments',
-          data: {
-            new_id: new_id,
-            comms: comms
+    if(userInfo){
+      comments.where({
+        new_id: new_id
+      }).get({
+        success: (res) => {
+          // console.log(res)
+          let comms= res.data[0].comments;
+          let people = {
+            content: value,
+            like: 0,
+            avatar: userInfo.avatarUrl,
+            nickname: userInfo.nickname
           }
-        }).then(res =>{
-          console.log(res)
-        })
-
-      }
-    })
+          comms.unshift(people);
+          // console.log(comm)
+          this.setData({
+            comms: comms,
+            input: '',
+          })
+          wx.cloud.callFunction({
+            name: 'updateComments',
+            data: {
+              new_id: new_id,
+              comms: comms
+            }
+          }).then(res =>{
+            console.log(res)
+          })
+  
+        }
+      })
+    }
   },
   addLike: function(e) { // 点击点赞图标增加点赞数同时保存到数据库
-    let like = e.currentTarget.dataset.item;
+    let item = e.currentTarget.dataset.item;
     let new_id = this.data.new_id;
-    // console.log(e)
-    let n = this.data.n;
-    let comlike = this.data.comlike;
     let comms = this.data.comms;
-    if(n%2 == 1) {
-      comms[like].like = comms[like].like + 1;
-    }else{
-      comms[like].like = comms[like].like - 1;
+    let likeItem = this.data.likeItem;
+    let likebool = 'likeItem['+item+'].bool'
+    let liken = 'likeItem['+item+'].n'
+    if(typeof(likeItem[item]) == "undefined"){
+      this.setData({
+        [likebool]: false,
+        [liken]: 0,
+      })
     }
+
+    if(likeItem[item]){
+      likeItem[item].n += 1;
+      if(likeItem[item].n%2){
+        comms[item].like += 1;
+      }else{
+        comms[item].like -= 1;
+      }
+      likeItem[item].bool = !(likeItem[item].bool);
+    }else{
+      likeItem[item].bool = true;
+      likeItem[item].n = 0;
+      comms[item].like += 1;
+    }
+
     this.setData({
       comms: comms,
-      comlike: !comlike,
-      n: n+1
+      likeItem: likeItem
     })
     // console.log(comms)
     wx.cloud.callFunction({
@@ -173,7 +192,7 @@ Page({
         comms: comms
       }
     }).then(res =>{
-      console.log(res)
+      // console.log(res)
     })
   },
   selectEmoji: function() { // 点击emoji图标显示选择emoji框
@@ -205,6 +224,8 @@ Page({
   upload: function() {
     // 手机 摄像头 相册
     // IOS Android， 小程序，
+    let new_id = this.data.new_id;
+    let comms = this.data.comms;
     wx.chooseImage({
       count: 4, // 最多可以选择的图片张数，默认9
       sizeType: ['original', 'compressed'], // original 原图，compressed 压缩图，默认二者都有
@@ -217,17 +238,21 @@ Page({
         for(let i = 0; i < tempFilePaths.length; i++){
           // 1. 取一个不会重复的文件名 一般使用时间戳
           let randString = Math.floor(Math.random() * 1000000) + '.png';
-          console.log("tempFile " + tempFilePaths)
+          // console.log("tempFile " + tempFilePaths)
           wx.cloud.uploadFile({
             cloudPath: randString,
             filePath: tempFilePaths[i],
             success: res => {
-              // console.log(res);
-              photos.add({
+              comms[0].image = res.fileID
+              console.log(comms)
+              wx.cloud.callFunction({
+                name: 'updateComments',
                 data: {
-                  image: res.fileID
+                  new_id: new_id,
+                  comms: comms
                 }
               }).then(res => {
+                console.log(res)
                 wx.showToast({
                   title: '上传成功',
                   icon: 'success'
@@ -259,9 +284,10 @@ Page({
    */
 
   onLoad: function (options) {
-    
+    console.log(options)
     this.setData({
-      new_id: options.contentId
+      new_id: options.contentId,
+      title: options.title
     });
     // console.log(this.data.new_id)
     this.getDetail();
@@ -270,27 +296,28 @@ Page({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
     }
+    // } else if (this.data.canIUse){
+    //   // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+    //   // 所以此处加入 callback 以防止这种情况
+    //   app.userInfoReadyCallback = res => {
+    //     this.setData({
+    //       userInfo: res.userInfo,
+    //       hasUserInfo: true
+    //     })
+    //   }
+    // } else {
+    //   // 在没有 open-type=getUserInfo 版本的兼容处理
+    //   wx.getUserInfo({
+    //     success: res => {
+    //       app.globalData.userInfo = res.userInfo
+    //       this.setData({
+    //         userInfo: res.userInfo,
+    //         hasUserInfo: true
+    //       })
+    //     }
+    //   })
+    // }
   },
 
   /**
@@ -305,5 +332,8 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  test: function() {
+    
   }
 })

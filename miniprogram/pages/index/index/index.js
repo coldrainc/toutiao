@@ -91,7 +91,7 @@ Page({
       })
     },
     onChange(event) { // 获取tab改变事件来使获取不同主题的新闻
-      // console.log(event)
+      console.log(event)
       // console.log(this.data.active.one);
 
       let index = event.detail.index;
@@ -186,9 +186,10 @@ Page({
     },
     showDetail: function(e) { // 点文章显示文章详情
       let item = e.currentTarget.dataset.item;
+      let title = this.data.title;
       // console.log(e)
       wx.navigateTo({
-        url:`../detail/detail?contentId=${item}`
+        url:`../detail/detail?contentId=${item}&title=${title}`
       })
     },
     showMore: function(e){

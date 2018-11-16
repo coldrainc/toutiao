@@ -1,5 +1,5 @@
 <import src="../../../wxParse/wxParse.wxml"></import>
-<view class="body">
+<view class="body" style="overflow-y: hidden">
     <scroll-view class="detail-scroll" scroll-y
     style="height: 100vh;" 
         scroll-into-view="{{toView}}"
@@ -40,7 +40,7 @@
                     <image class="icon" src="../../../image/trash.png"/>
                     <view class="cont">不喜欢</view>
                 </view>
-                <view class="button">
+                <view class="button"  open-type="share">
                     <image class="icon" src="../../../image/wechat.png"/>
                     <view class="cont">微信</view>
                 </view>
@@ -80,8 +80,8 @@
                     <view class="center__buttom">1小时前</view>
                     <!-- <view wx:if="{{imga}}"></view> -->
                 </view>
-                <view class="like" bind:tap="addLike" data-item="{{index}}">
-                    <image class="dz" src="../../../image/like.png" wx:if="{{!comlike}}"/>
+                <view class="like" id="{{index}}" bind:tap="addLike" data-item="{{index}}">
+                    <image class="dz" src="../../../image/like.png" wx:if="{{!likeItem[index].bool}}"/>
                     <image class="icon1" wx:else src="../../../image/selectedLike.png"/>
                     <view class="cont">{{comm.like}}</view>
                 </view>
@@ -134,6 +134,7 @@
                 focus="{{focus}}"
                 cursor-spacing="100rpx"
                 bindinput="bindKeyInput"
+                value="{{input}}"
             />
             <view class="pop__submit" style="color: {{color}}" bindtap="submit" disabled="{{submit}}">发布</view>
         </view>
@@ -168,22 +169,22 @@
         overlay-style="background-color:rgba(0,0,0,0.1);"
     >
         <view class="forward">
-            <view class="tt item">
+            <button class="tt item">
                 <image src="../../../image/tt.png" />
                 <view class="forward__object">转发到头条</view>
-            </view>
-            <view class="pyq item">
+            </button>
+            <button class="pyq item" open-type="share">
                     <image src="../../../image/friend.png" />
                 <view class="forward__object">朋友圈</view>
-            </view>
-            <view class="wx item">
-                    <image src="../../../image/wechat.png" />
+            </button>
+            <button class="wx item" open-type="share">
+                <image src="../../../image/wechat.png" />
                 <view class="forward__object">微信</view>
-            </view>
-            <view class="dd item">
+            </button>
+            <button class="dd item">
                     <image src="../../../image/dd.png" />
                 <view class="forward__object">钉钉</view>
-            </view>
+            </button>
         </view>
         <view class="cancle" bind:tap="clickShare">取消</view>
     </van-popup>
