@@ -244,6 +244,9 @@ Page({
             filePath: tempFilePaths[i],
             success: res => {
               comms[0].image = res.fileID
+              this.setData({
+                comms: comms
+              })
               console.log(comms)
               wx.cloud.callFunction({
                 name: 'updateComments',

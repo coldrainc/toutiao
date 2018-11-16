@@ -76,7 +76,7 @@
                 <view class="center">
                     <view class="center__nickname">coding</view>
                     <view class="center__comment">{{comm.content}}</view>
-                    <image src="{{comment_img}}" wx:if="{{comment_img.length > 0}}"/>
+                    <image src="{{comm.image}}" wx:if="{{comm.image.length > 0}}"/>
                     <view class="center__buttom">1小时前</view>
                     <!-- <view wx:if="{{imga}}"></view> -->
                 </view>

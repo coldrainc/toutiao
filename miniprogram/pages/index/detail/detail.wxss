@@ -124,6 +124,10 @@
 .comment .center{
     flex: 1;
 }
+.center image{
+    width: 100rpx;
+    height: 100rpx;
+}
 .block{
     width: 100%;
     height: 240rpx;
